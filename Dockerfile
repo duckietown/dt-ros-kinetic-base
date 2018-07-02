@@ -1,4 +1,4 @@
-FROM maidbot/resin-raspberrypi3-ros
+FROM maidbot/resin-raspberrypi3-qemu
 
 RUN [ "cross-build-start" ]
 
