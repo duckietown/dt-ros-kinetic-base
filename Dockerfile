@@ -105,7 +105,7 @@ RUN [ "cross-build-end" ]
 
 # RPi libs
 ADD vc.tgz /opt/
-COPY 00-vmcx.conf /etc/ld.so.conf.d
+COPY 00-vmcs.conf /etc/ld.so.conf.d
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
