@@ -1,4 +1,4 @@
-FROM maidbot/resin-raspberrypi3-qemu
+FROM maidbot/resin-raspberrypi3-ros
 
 RUN [ "cross-build-start" ]
 
@@ -75,7 +75,7 @@ ENV ROS_DISTRO kinetic
 RUN rosdep init && rosdep update
 
 # Add ROS apt repository
-RUN echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list \
+RUN echo "deb http://packages.ros.org/ros/ubuntu xenial main" >> /etc/apt/sources.list.d/ros-latest.list \
 && apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net --recv-key 0xB01FA116
 
 # install ros packages
@@ -97,12 +97,13 @@ RUN apt-get update && apt-get install -y \
 	python-smbus \
 	python-termcolor \
 	python-tables \
-	python-frozendict \
 	python-lxml \
 	python-bs4 \
 	python-openssl \
 	python-service-identity \
 	python-catkin-tools \
+	python-enum \
+	python-rpi.gpio \
      && rm -rf /var/lib/apt/lists/*
 
 RUN pip install --upgrade \
@@ -120,7 +121,8 @@ RUN pip install --upgrade \
 	PyGeometry==1.3 \
 	beautifulsoup4==4.6.0 \
 	matplotlib==1.5.1 \
-	pycamera \
+	frozendict \
+	picamera \
 	jpeg4py
 
 RUN [ "cross-build-end" ] 
