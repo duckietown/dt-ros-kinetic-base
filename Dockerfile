@@ -69,12 +69,16 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV TERM "xterm"
+ENV ROS_DISTRO kinetic
 
 # bootstrap rosdep
 RUN rosdep init && rosdep update
 
+# Add ROS apt repository
+RUN echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list \
+&& apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net --recv-key 0xB01FA116
+
 # install ros packages
-ENV ROS_DISTRO kinetic
 RUN apt-get update && apt-get install -y \
      	ros-kinetic-ros-base=1.3.2-0* \
      	ros-kinetic-ros-core=1.3.2-0* \
