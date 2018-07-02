@@ -55,7 +55,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 	libxml2-dev \
 	libnss-mdns \
 	libffi-dev \
-	libturbojpeg \
+	libturbojpeg1 \
 	libblas-dev \
 	liblapack-dev \
 	libatlas-base-dev \
