@@ -61,7 +61,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 	libatlas-base-dev \
 	libyaml-cpp-dev \
 	libpcl-dev \
-	libvtk6-dev \
+	libvtk5-dev \
 	libboost-all-dev \
      && rm -rf /var/lib/apt/lists/*
 
