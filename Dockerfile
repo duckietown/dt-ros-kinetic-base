@@ -1,30 +1,39 @@
-FROM maidbot/resin-raspberrypi3-qemu
-
-RUN [ "cross-build-start" ]
-
-#switch on systemd init system in container
-ENV INITSYSTEM off
+FROM arm32v7/ros:kinetic-ros-base-xenial
 
 MAINTAINER Breandan Considine breandan.considine@nutonomy.com
 
-## ros-kinetic-core
+# switch on systemd init system in container
+ENV INITSYSTEM off
+ENV QEMU_EXECVE 1
+# setup environment
+ENV TERM "xterm"
+ENV LANG C.UTF-8
+ENV LC_ALL C.UTF-8
+ENV ROS_DISTRO kinetic
+
+COPY ./bin/ /usr/bin/
+
+RUN [ "cross-build-start" ]
+
 # install packages
 RUN apt-get update && apt-get install -q -y \
-    	dirmngr \
-    	gnupg2 \
-    	sudo \
-	locales \
-	locales-all \
-	i2c-tools \
-	net-tools \
-	iputils-ping \
-	man \
-	ssh \
-	htop \
-	atop \
-	iftop \
-	less \
-	lsb-release \
+		dirmngr \
+		gnupg2 \
+		sudo \
+		apt-utils \
+		apt-file \
+		locales \
+		locales-all \
+		i2c-tools \
+		net-tools \
+		iputils-ping \
+		man \
+		ssh \
+		htop \
+		atop \
+		iftop \
+		less \
+		lsb-release \
     && rm -rf /var/lib/apt/lists/*
 
 # setup keys
@@ -33,79 +42,56 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 421C365BD9
 # setup sources.list
 RUN echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list
 
-# install bootstrap tools
-RUN apt-get update && apt-get install --no-install-recommends -y \
-    	python-rosdep \
-    	python-rosinstall \
-    	python-vcstools \
-    	python-pip \
-    && rm -rf /var/lib/apt/lists/*
-
-
-# development tools
-RUN apt-get update && apt-get install --no-install-recommends -y \
-	build-essential \
-	emacs \
-	vim \
-	byobu \
-	zsh \
-	git \
-	git-extras \
-	libxslt-dev \
-	libxml2-dev \
-	libnss-mdns \
-	libffi-dev \
-	libturbojpeg1 \
-	libblas-dev \
-	liblapack-dev \
-	libatlas-base-dev \
-	libyaml-cpp-dev \
-	libpcl-dev \
-	libvtk5-dev \
-	libboost-all-dev \
-     && rm -rf /var/lib/apt/lists/*
-
-# setup environment
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-ENV TERM "xterm"
-ENV ROS_DISTRO kinetic
+# install additional ros packages
+RUN apt-get update && apt-get install -y \
+		ros-kinetic-robot \
+		ros-kinetic-perception \
+		ros-kinetic-navigation \
+		ros-kinetic-robot-localization \
+		ros-kinetic-roslint \
+		ros-kinetic-hector-trajectory-server \
+		ros-kinetic-joystick-drivers \
+	&& rm -rf /var/lib/apt/lists/*
 
 # bootstrap rosdep
 RUN rosdep init && rosdep update
 
-# Add ROS apt repository
-RUN echo "deb http://packages.ros.org/ros/ubuntu xenial main" >> /etc/apt/sources.list.d/ros-latest.list \
-&& apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net --recv-key 0xB01FA116
+# development tools & libraries
+RUN apt-get update && apt-get install --no-install-recommends -y \
+		emacs \
+		vim \
+		byobu \
+		zsh \
+		libxslt-dev \
+		libxml2-dev \
+		libnss-mdns \
+		libffi-dev \
+		libturbojpeg \
+		libblas-dev \
+		liblapack-dev \
+		libatlas-base-dev \
+		libyaml-cpp-dev \
+		libpcl-dev \
+		libvtk6-dev \
+		python-pip \
+		# Python Dependencies
+		python-dev \
+		ipython \
+		python-sklearn \
+		python-smbus \
+		python-termcolor \
+		python-tables \
+		python-lxml \
+		python-bs4 \
+		python-openssl \
+		python-service-identity \
+		python-catkin-tools \
+		python-enum \
+		python-rpi.gpio \
+		python-frozendict \
+	&& rm -rf /var/lib/apt/lists/*
 
-# install ros packages
-RUN apt-get update && apt-get install -y \
-     	ros-kinetic-ros-base=1.3.2-0* \
-     	ros-kinetic-ros-core=1.3.2-0* \
-    	ros-kinetic-robot=1.3.2-0* \
-  	ros-kinetic-perception=1.3.2-0* \
-    	ros-kinetic-navigation \
- 	ros-kinetic-robot-localization \
-    	ros-kinetic-roslint \
- 	ros-kinetic-hector-trajectory-server \
-    	ros-kinetic-joystick-drivers \
-    	# Python Dependencies
-    	# https://github.com/duckietown/duckuments/blob/dd3c5229526bcbb3e2f6cacc813b1313e7a4dbbc/docs/atoms_17_opmanual_duckiebot/atoms_17_setup_duckiebot_DB17-jwd/1_1_reproducing_ubuntu_image.md#install-packages
-	python-dev \
-	ipython \
-	python-sklearn \
-	python-smbus \
-	python-termcolor \
-	python-tables \
-	python-lxml \
-	python-bs4 \
-	python-openssl \
-	python-service-identity \
-	python-catkin-tools \
-	python-enum \
-	python-rpi.gpio \
-     && rm -rf /var/lib/apt/lists/*
-
+# python libraries
 RUN pip install --upgrade \
 	pyparsing==2.2.0 \
 	PyContracts==1.8.2 \
@@ -121,11 +107,14 @@ RUN pip install --upgrade \
 	PyGeometry==1.3 \
 	beautifulsoup4==4.6.0 \
 	matplotlib==1.5.1 \
-	frozendict \
 	picamera \
 	jpeg4py
 
 RUN [ "cross-build-end" ] 
+
+# RPi libs
+ADD vc.tgz /opt/
+COPY 00-vmcx.conf /etc/ld.so.conf.d
 
 # setup entrypoint
 COPY ./ros_entrypoint.sh /
