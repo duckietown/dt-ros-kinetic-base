@@ -53,9 +53,6 @@ RUN apt-get update && apt-get install -y \
 		ros-kinetic-joystick-drivers \
 	&& rm -rf /var/lib/apt/lists/*
 
-# bootstrap rosdep
-RUN rosdep init && rosdep update
-
 # development tools & libraries
 RUN apt-get update && apt-get install --no-install-recommends -y \
 		emacs \
@@ -63,37 +60,30 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 		byobu \
 		zsh \
 		libxslt-dev \
-		libxml2-dev \
 		libnss-mdns \
 		libffi-dev \
 		libturbojpeg \
 		libblas-dev \
 		liblapack-dev \
 		libatlas-base-dev \
-		libyaml-cpp-dev \
-		libpcl-dev \
-		libvtk6-dev \
-		python-pip \
 		# Python Dependencies
-		python-dev \
 		ipython \
+		python-pip \
+		python-wheel \
 		python-sklearn \
 		python-smbus \
 		python-termcolor \
 		python-tables \
 		python-lxml \
 		python-bs4 \
-		python-openssl \
-		python-service-identity \
 		python-catkin-tools \
-		python-enum \
-		python-rpi.gpio \
 		python-frozendict \
+		python-pymongo \
+		# python-matplotlib \
 	&& rm -rf /var/lib/apt/lists/*
 
 # python libraries
 RUN pip install --upgrade \
-	pyparsing==2.2.0 \
 	PyContracts==1.8.2 \
 	compmake==3.5.23 \
 	comptests==1.4.22 \
@@ -102,13 +92,14 @@ RUN pip install --upgrade \
 	conftools==1.9.1 \
 	procgraph==1.10.10 \
 	ros_node_utils==1.1.1 \
-	pymongo==3.5.1 \
 	ruamel.yaml==0.15.34 \
 	PyGeometry==1.3 \
-	beautifulsoup4==4.6.0 \
-	matplotlib==1.5.1 \
-	picamera \
+	# beautifulsoup4==4.6.0 \
 	jpeg4py
+
+# the following is required for picamera to be installed inside the container
+ENV READTHEDOCS True
+RUN pip install --upgrade picamera
 
 RUN [ "cross-build-end" ] 
 
