@@ -93,13 +93,13 @@ RUN pip install --upgrade \
 	procgraph==1.10.10 \
 	ros_node_utils==1.1.1 \
 	ruamel.yaml==0.15.34 \
-	PyGeometry==1.3 \
+	PyGeometry==1.3
 	# beautifulsoup4==4.6.0 \
-	jpeg4py
+	# jpeg4py # <== this will be installed in a separate layer together wtih picam
 
 # the following is required for picamera to be installed inside the container
-ENV READTHEDOCS True
-RUN pip install --upgrade picamera
+# ENV READTHEDOCS True
+# RUN pip install --upgrade picamera
 
 RUN [ "cross-build-end" ] 
 
