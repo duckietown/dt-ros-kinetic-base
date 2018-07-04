@@ -89,10 +89,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # python libraries
 RUN pip install --upgrade \
 	ruamel.yaml==0.15.34 \
-	ros_node_utils==1.1.1 \
-	DecentLogs==1.1.2 \
-	QuickApp==1.3.12 \
-	jpeg4py
+	ros_node_utils==1.1.1
 
 # the following is required for picamera to be installed inside the container
 ENV READTHEDOCS True
