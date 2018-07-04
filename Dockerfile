@@ -86,6 +86,18 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 		python-pymongo \
 	&& rm -rf /var/lib/apt/lists/*
 
+# python libraries
+RUN pip install --upgrade \
+	ruamel.yaml==0.15.34 \
+	ros_node_utils==1.1.1 \
+	DecentLogs==1.1.2 \
+	QuickApp==1.3.12 \
+	jpeg4py
+
+# the following is required for picamera to be installed inside the container
+ENV READTHEDOCS True
+RUN pip install --upgrade picamera
+
 RUN [ "cross-build-end" ]
 
 # setup entrypoint
