@@ -58,6 +58,34 @@ ADD vc.tgz /opt/
 COPY 00-vmcs.conf /etc/ld.so.conf.d
 RUN ldconfig
 
+# development tools & libraries
+RUN apt-get update && apt-get install --no-install-recommends -y \
+		emacs \
+		vim \
+		byobu \
+		zsh \
+		libxslt-dev \
+		libnss-mdns \
+		libffi-dev \
+		libturbojpeg \
+		libblas-dev \
+		liblapack-dev \
+		libatlas-base-dev \
+		# Python Dependencies
+		ipython \
+		python-pip \
+		python-wheel \
+		python-sklearn \
+		python-smbus \
+		python-termcolor \
+		python-tables \
+		python-lxml \
+		python-bs4 \
+		python-catkin-tools \
+		python-frozendict \
+		python-pymongo \
+	&& rm -rf /var/lib/apt/lists/*
+
 RUN [ "cross-build-end" ]
 
 # setup entrypoint
