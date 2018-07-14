@@ -98,7 +98,7 @@ RUN pip install --upgrade \
 	conftools==1.9.1 \
 	procgraph==1.10.10 \
 	beautifulsoup4==4.6.0 \
-	PyGeometry==1.3
+	PyGeometry==1.3 \
 	numpy \
 	jpeg4py \
 	networkx
