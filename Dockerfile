@@ -89,7 +89,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 # python libraries
 RUN pip install --upgrade \
 	ruamel.yaml==0.15.34 \
-	ros_node_utils==1.1.1
+	ros_node_utils==1.1.1 \
 	PyContracts==1.8.2 \
 	compmake==3.5.23 \
 	comptests==1.4.22 \
