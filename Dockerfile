@@ -51,7 +51,9 @@ RUN apt-get update && apt-get install -y \
 		ros-kinetic-roslint \
 		ros-kinetic-hector-trajectory-server \
 		ros-kinetic-joystick-drivers \
-	&& rm -rf /var/lib/apt/lists/*
+		ros-kinetic-rqt \
+    		ros-kinetic-rqt-common-plugins \
+    && rm -rf /var/lib/apt/lists/*
 
 # RPi libs
 ADD vc.tgz /opt/
