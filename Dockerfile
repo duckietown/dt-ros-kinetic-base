@@ -85,6 +85,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 		python-bs4 \
 		python-catkin-tools \
 		python-frozendict \
+		python-ruamel.yaml \
 		python-pymongo \
 	&& rm -rf /var/lib/apt/lists/*
 
