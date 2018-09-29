@@ -72,6 +72,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
         libblas-dev \
         liblapack-dev \
         libatlas-base-dev \
+        docker.io \
         # Python Dependencies
         ipython \
         python-pip \
