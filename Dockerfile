@@ -30,6 +30,7 @@ RUN apt-get update && apt-get install -q -y \
         htop \
         atop \
         iftop \
+        iotop \
         less \
         lsb-release \
     && rm -rf /var/lib/apt/lists/*
