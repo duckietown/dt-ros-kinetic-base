@@ -10,7 +10,7 @@ tag=duckietown/$(repo):$(branch)
 labels=$(shell ./labels.py)
 
 build:
-	docker build $(labels) -t $(tag) .
+	docker build --pull $(labels) -t $(tag) .
 
 push:
 	docker push $(tag)
