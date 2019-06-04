@@ -1,4 +1,12 @@
-FROM arm32v7/ros:kinetic-ros-base-xenial
+ARG ARCH=arm32v7
+ARG ROS_DISTRO=kinetic
+ARG OS_DISTRO=xenial
+
+FROM ${ARCH}/ros:${ROS_DISTRO}-ros-base-${OS_DISTRO}
+
+ARG ARCH
+ARG ROS_DISTRO
+ARG OS_DISTRO
 
 # switch on systemd init system in container
 ENV INITSYSTEM off
@@ -7,9 +15,10 @@ ENV QEMU_EXECVE 1
 ENV TERM "xterm"
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
-ENV ROS_DISTRO kinetic
+ENV ROS_DISTRO "${ROS_DISTRO}"
+ENV OS_DISTRO "${OS_DISTRO}"
 
-COPY ./bin/ /usr/bin/
+COPY ./assets/qemu/${ARCH}/ /usr/bin/
 
 RUN [ "cross-build-start" ]
 
@@ -93,7 +102,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 RUN [ "cross-build-end" ]
 
 # setup entrypoint
-COPY ./ros_entrypoint.sh /
+COPY ./assets/ros_entrypoint.sh /
 
 ENTRYPOINT ["/ros_entrypoint.sh"]
 CMD ["bash"]
