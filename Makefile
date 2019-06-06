@@ -12,7 +12,7 @@ tag=duckietown/$(arch)-$(repo):$(branch)
 labels=$(shell ./labels.py)
 
 build:
-	docker build $(labels) -t $(tag) --build-arg ARCH=$(arch) .
+	docker build --pull $(labels) -t $(tag) --build-arg ARCH=$(arch) .
 
 push:
 	docker push $(tag)
