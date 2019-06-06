@@ -24,7 +24,7 @@ build build-no-cache:
 		--build-arg ARCH=$(arch) \
 		--no-cache=$(no_cache) \
 		.
-  #
+
 	@if [ "$(arch)" = "$(default_arch)" ]; then \
 		echo "Tagging image $(tag) as $(default_tag)."; \
 		docker tag $(tag) $(default_tag); \
@@ -33,7 +33,7 @@ build build-no-cache:
 
 push:
 	docker push $(tag)
-	#
+
 	@if [ "$(arch)" = "$(default_arch)" ]; then \
 		docker push $(default_tag); \
 	fi
