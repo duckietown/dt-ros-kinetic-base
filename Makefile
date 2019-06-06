@@ -8,11 +8,8 @@ branch=$(shell git rev-parse --abbrev-ref HEAD)
 # name of the repo
 repo=$(shell basename -s .git `git config --get remote.origin.url`)
 
-ifeq ($(arch), $(default_arch))
-	tags=duckietown/$(repo):$(branch)-$(arch) duckietown/$(repo):$(branch)
-else
-	tags=duckietown/$(repo):$(branch)-$(arch)
-endif
+default_tag=duckietown/$(repo):$(branch)
+tag=duckietown/$(repo):$(branch)-$(arch)
 
 labels=$(shell ./labels.py)
 
@@ -20,17 +17,23 @@ build: no_cache=0
 build-no-cache: no_cache=1
 
 build build-no-cache:
-	@- $(foreach tag,$(tags), \
-		docker build \
-			--pull \
-			$(labels) \
-			-t $(tag) \
-			--build-arg ARCH=$(arch) \
-			--no-cache=$(no_cache) \
-			.; \
-  )
+	docker build \
+		--pull \
+		$(labels) \
+		-t $(tag) \
+		--build-arg ARCH=$(arch) \
+		--no-cache=$(no_cache) \
+		.
+  #
+	@if [ "$(arch)" = "$(default_arch)" ]; then \
+		echo "Tagging image $(tag) as $(default_tag)."; \
+		docker tag $(tag) $(default_tag); \
+		echo "Done!"; \
+	fi
 
 push:
-	@- $(foreach tag,$(tags), \
-		docker push $(tag); \
-  )
+	docker push $(tag)
+	#
+	@if [ "$(arch)" = "$(default_arch)" ]; then \
+		docker push $(default_tag); \
+	fi
