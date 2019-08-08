@@ -7,8 +7,8 @@ env_check:
 	@# check if the docker-tools repo is initialized
 	@if [ ! -f "$(build_mk)" ]; then \
 		echo "The submodule 'docker-tools' is not initialized. Initializing now..."; \
-		@git submodule init; \
-		@git submodule update; \
+		git submodule init; \
+		git submodule update; \
 	fi
 
 build build-no-cache push: env_check
