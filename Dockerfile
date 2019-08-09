@@ -60,6 +60,7 @@ RUN apt-get update \
         libatlas-base-dev \
         # Python Dependencies
         python-pip \
+        python-wheel \
         python-smbus \
         python-termcolor \
         python-tables \
