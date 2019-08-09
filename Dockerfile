@@ -9,16 +9,16 @@ ARG ARCH
 ARG ROS_DISTRO
 ARG OS_DISTRO
 
-# switch on systemd init system in container
+# setup environment
 ENV INITSYSTEM off
 ENV QEMU_EXECVE 1
-# setup environment
 ENV TERM "xterm"
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 ENV ROS_DISTRO "${ROS_DISTRO}"
 ENV OS_DISTRO "${OS_DISTRO}"
 
+# copy QEMU
 COPY ./assets/qemu/${ARCH}/ /usr/bin/
 
 # install packages
