@@ -1,3 +1,4 @@
+VERSION=1
 
 root_dir:=$(shell dirname $(realpath $(lastword $(MAKEFILE_LIST))))
 
@@ -13,3 +14,11 @@ env_check:
 
 build build-no-cache push: env_check
 	@$(MAKE) -f $(build_mk) _$@
+
+build-all:
+	@$(MAKE) build arch=amd64
+	@$(MAKE) build arch=arm32v7
+
+push-all:
+	@$(MAKE) push arch=amd64
+	@$(MAKE) push arch=arm32v7
