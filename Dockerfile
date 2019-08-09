@@ -8,7 +8,6 @@ FROM ${ARCH}/ros:${BASE_TAG}
 ARG ARCH
 ARG ROS_DISTRO
 ARG OS_DISTRO
-# ARG USE_QEMU=1
 
 # switch on systemd init system in container
 ENV INITSYSTEM off
@@ -21,8 +20,6 @@ ENV ROS_DISTRO "${ROS_DISTRO}"
 ENV OS_DISTRO "${OS_DISTRO}"
 
 COPY ./assets/qemu/${ARCH}/ /usr/bin/
-
-# RUN cross-build-start "${USE_QEMU}"
 
 # install packages
 RUN apt-get update \
@@ -39,41 +36,39 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 421C365BD9
 # setup sources.list
 RUN echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -sc` main" > /etc/apt/sources.list.d/ros-latest.list
 
-# # install additional ros packages
-# RUN apt-get update \
-#     && apt-get install --no-install-recommends -y \
-#         ros-kinetic-robot \
-#         ros-kinetic-joystick-drivers \
-#     && rm -rf /var/lib/apt/lists/*
-#
-# # RPi libs
-# ADD assets/vc.tgz /opt/
-# COPY assets/00-vmcs.conf /etc/ld.so.conf.d
-# RUN ldconfig
-#
-# # development tools & libraries
-# RUN apt-get update \
-#     && apt-get install --no-install-recommends -y \
-#         libxslt-dev \
-#         libnss-mdns \
-#         libffi-dev \
-#         libturbojpeg \
-#         libblas-dev \
-#         liblapack-dev \
-#         libatlas-base-dev \
-#         # Python Dependencies
-#         python-pip \
-#         python-smbus \
-#         python-termcolor \
-#         python-tables \
-#         python-lxml \
-#         python-bs4 \
-#         python-catkin-tools \
-#         python-ruamel.yaml \
-#         python-pymongo \
-#     && rm -rf /var/lib/apt/lists/*
+# install additional ros packages
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+        ros-kinetic-robot \
+        ros-kinetic-joystick-drivers \
+    && rm -rf /var/lib/apt/lists/*
 
-# RUN cross-build-end "${USE_QEMU}"
+# RPi libs
+ADD assets/vc.tgz /opt/
+COPY assets/00-vmcs.conf /etc/ld.so.conf.d
+RUN ldconfig
+
+# development tools & libraries
+RUN apt-get update \
+    && apt-get install --no-install-recommends -y \
+        libxslt-dev \
+        libnss-mdns \
+        libffi-dev \
+        libturbojpeg \
+        libblas-dev \
+        liblapack-dev \
+        libatlas-base-dev \
+        # Python Dependencies
+        python-pip \
+        python-smbus \
+        python-termcolor \
+        python-tables \
+        python-lxml \
+        python-bs4 \
+        python-catkin-tools \
+        python-ruamel.yaml \
+        python-pymongo \
+    && rm -rf /var/lib/apt/lists/*
 
 # setup entrypoint
 COPY ./assets/ros_entrypoint.sh /
