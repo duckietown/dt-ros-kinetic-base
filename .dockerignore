@@ -1,1 +1,5 @@
-docker-tools
+# Ignore everything
+**
+
+# Allow files and directories
+!assets
