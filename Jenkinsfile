@@ -11,7 +11,7 @@ pipeline {
     stage('Build') {
       steps {
           sh 'printenv'
-          echo "${BASE_IMAGE}"
+          echo scm.branches[0].name
       }
     }
   }
