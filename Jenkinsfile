@@ -22,7 +22,7 @@ pipeline {
     	  sh 'dts install devel'
       }
     }
-    stage('Clean') {
+    stage('Pre-Clean') {
       steps {
         sh 'dts devel clean'
       }
@@ -37,7 +37,7 @@ pipeline {
         sh 'dts devel push'
       }
     }
-    stage('Clean') {
+    stage('Post-Clean') {
       steps {
         sh 'dts devel clean'
       }
