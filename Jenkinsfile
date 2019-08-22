@@ -17,15 +17,36 @@ pipeline {
   stages {
     stage('Prepare') {
       steps {
-          sh 'pip3 install --upgrade duckietown-shell'
-          sh 'dts update'
-	  sh 'dts install devel'
+        sh 'pip3 install --upgrade duckietown-shell'
+        sh 'dts update'
+    	  sh 'dts install devel'
+      }
+    }
+    stage('Clean') {
+      steps {
+        sh 'dts devel clean'
       }
     }
     stage('Build') {
       steps {
-          sh 'dts devel build --rm --no-multiarch'
+        sh 'dts devel build --no-multiarch'
       }
     }
+    stage('Push') {
+      steps {
+        sh 'dts devel push'
+      }
+    }
+    stage('Clean') {
+      steps {
+        sh 'dts devel clean'
+      }
+    }
+  }
+  post {
+      always {
+          sh 'dts devel clean'
+          cleanWs()
+      }
   }
 }
