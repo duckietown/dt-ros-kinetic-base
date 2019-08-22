@@ -24,7 +24,7 @@ pipeline {
     }
     stage('Build') {
       steps {
-          sh 'dts devel build'
+          sh 'dts devel build --no-multiarch'
       }
     }
   }
