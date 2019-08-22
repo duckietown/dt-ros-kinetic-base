@@ -34,7 +34,9 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'dts devel push'
+        withDockerRegistry(credentialsId: 'DockerHub', url: 'https://index.docker.io/v1/') {
+          sh 'dts devel push'
+        }
       }
     }
     stage('Post-Clean') {
