@@ -1,0 +1,29 @@
+# LIST YOUR APT PACKAGES HERE
+
+# development tools & libraries
+sudo
+locales
+locales-all
+i2c-tools
+libxslt-dev
+libnss-mdns
+libffi-dev
+libturbojpeg
+libblas-dev
+liblapack-dev
+libatlas-base-dev
+# Python Dependencies
+python-pip
+python-wheel
+python-smbus
+python-termcolor
+python-tables
+python-lxml
+python-bs4
+python-catkin-tools
+python-ruamel.yaml
+python-pymongo
+
+# ROS packages
+ros-kinetic-robot
+ros-kinetic-joystick-drivers
