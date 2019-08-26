@@ -43,6 +43,12 @@ RUN pip install -r /tmp/dependencies-py.txt
 # remove dependencies files
 RUN rm /tmp/dependencies*
 
+# configure catkin to work nicely with docker
+RUN sed \
+  -i \
+  's/__default_terminal_width = 80/__default_terminal_width = 160/' \
+  /usr/lib/python2.7/dist-packages/catkin_tools/common.py
+
 # upgrade pip
 RUN pip install --upgrade pip
 
